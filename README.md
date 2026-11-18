@@ -20,6 +20,21 @@ Adaptive Motion Control drives a cobot arm along its path while what it carries,
 
 **Output.** Six joint torques, within each motor's rated limit, a thousand times a second. One control step takes about 50 µs on a laptop CPU.
 
+## Where It Fits
+
+The model is designed for a robot whose body is well known, doing planned motions, while its condition drifts in production. Each part of the design answers one feature of that situation.
+
+| The situation | The design |
+| :-- | :-- |
+| The maker publishes the robot's masses, inertias and limits | Only the residual is learned, so little data is needed |
+| Changes drift or step and then hold, such as a part being carried, joints warming over minutes or motors wearing over months | The head adapts every millisecond with a memory of about a second |
+| The effects are smooth in the arm's state, such as friction with speed or a payload with pose | Learned features make them linear, so adapting is an exact least-squares fit |
+| Motions are planned in advance, as in pick-and-place, machine tending, dispensing or scanning | The residual is evaluated on the planned path and stays out of the feedback loop |
+| The cell is in production, where trial and error is not allowed | The model learns from logs the arm records in normal work |
+| A torque-controlled servo runs at 1 kHz on a modest CPU | One step takes about 50 µs |
+
+Some situations call for a different design. Changes faster than a few hundred milliseconds, such as catching or impacts, need direct sensing of the load. Contact tasks such as insertion or polishing need force control. Reactive motion without a planned path, and robots without a trustworthy nominal model, are outside what this model is built for.
+
 ## How It Performs
 
 The controllers are tested on 40 pick-and-place episodes, each of 16 moves between random points in the arm's workspace, with every joint kept under 70% of its rated speed. In each episode the payload changes at every pick and place, joint friction drifts as the joints warm up or cool down, and the motors lose torque. In 20 episodes these changes stay within the ranges of the training logs. In the other 20 they go beyond them, with payloads of 4 to 8 kg, friction from 0.4 to 1.6 times its base value and up to 30% of motor torque lost. None of these episodes, nor the 20 used to choose settings, appears in training. Every learned controller is trained five times on different data, and intervals are 95% hierarchical bootstrap intervals over seeds and episodes.
@@ -134,7 +149,6 @@ Everything runs on a CPU. The whole study takes about half an hour on a laptop, 
 - Tested in simulation only. The arm, its sensing and its changes are modelled, and the friction values are typical harmonic-drive values, since KUKA does not publish friction.
 - The payload is a point mass at the flange. A long or offset part would add inertia the residual has to learn.
 - Each pick changes the load in one step, and the head needs a few hundred milliseconds to follow, which is where most of the remaining error sits.
-- The arm moves in free space. Contact with parts or fixtures is not modelled.
 - Times are measured on a laptop CPU, not on a robot controller.
 
 ## License
