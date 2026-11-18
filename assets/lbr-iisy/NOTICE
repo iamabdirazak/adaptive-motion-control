@@ -1,0 +1,21 @@
+KUKA LBR iisy 8 R930, arm-only MuJoCo model.
+
+Source
+  KUKA's official ROS 2 robot descriptions: https://github.com/kroshu/kuka_robot_descriptions
+  Package kuka_lbr_iisy_support, robot lbr_iisy8_r930, commit d2fa4377 (6 Oct 2026).
+  Licensed under the Apache License 2.0 (see LICENSE). KUKA trademarks are not used.
+
+What was taken as published
+  Joint origins and axes, joint position limits, effort limits, velocity limits, link masses, centres of
+  mass and inertia tensors (from the URDF), and the collision meshes (meshes/collision, unmodified STL).
+  KUKA's README marks transformations, all joint limits, inertial values and collision meshes as verified
+  for this robot.
+
+What was changed
+  Visual meshes: KUKA ships them as Collada (.dae), which MuJoCo cannot read. They were converted to STL
+  (meshes/visual) with trimesh, geometry only (KUKA's colours and textures are dropped); vertex positions
+  are unchanged, and the URDF visual offsets are carried into each visual geom's pos/quat.
+  Inertia tensors: MuJoCo stores them as principal moments with an orientation; the conversion is
+  MuJoCo's own URDF compiler, so the values are the same tensors expressed differently.
+  The base link's inertia is a placeholder (the base is fixed and its inertia never enters the dynamics).
+  Added: a Coral status ring at the base (visual only) and a "flange" site at KUKA's tool0 frame.

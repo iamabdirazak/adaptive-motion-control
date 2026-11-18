@@ -1,0 +1,16 @@
+<!-- A two-joint stand-in arm for the tests, moving in a vertical plane so gravity loads its joints.
+     Like the real robot's file, it has no motors or payload; src.plant.robot.build adds them. -->
+<mujoco model="stand-in">
+  <compiler angle="radian"/>
+  <worldbody>
+    <body name="upper">
+      <joint name="shoulder" type="hinge" axis="0 1 0" range="-2.5 2.5" armature="0.05" actuatorfrcrange="-300 300"/>
+      <geom type="capsule" fromto="0 0 0 0.4 0 0" size="0.04" mass="3"/>
+      <body name="fore" pos="0.4 0 0">
+        <joint name="elbow" type="hinge" axis="0 1 0" range="-2.5 2.5" armature="0.03" actuatorfrcrange="-150 150"/>
+        <geom type="capsule" fromto="0 0 0 0.35 0 0" size="0.03" mass="1.5"/>
+        <site name="flange" pos="0.35 0 0"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

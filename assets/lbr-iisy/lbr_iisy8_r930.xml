@@ -1,0 +1,84 @@
+<mujoco model="lbr_iisy8_r930">
+  <!-- KUKA LBR iisy 8 R930, arm only (no gripper, no scene), converted to MJCF from KUKA's official
+       ROS 2 description (github.com/kroshu/kuka_robot_descriptions, kuka_lbr_iisy_support, Apache-2.0).
+       Joint origins, axes, position limits, effort limits, masses and inertias are KUKA's published values,
+       which KUKA lists as verified for this robot. Velocity limits are noted per joint. Joint damping,
+       friction and actuators are not part of KUKA's description and are left to the user of this model.
+       Base frame: z up, the arm's zero pose reaches along +x. Coral marks the base status light. -->
+  <compiler angle="radian" meshdir="meshes"/>
+
+  <asset>
+    <mesh name="base_link" file="visual/base_link.stl"/>
+    <mesh name="base_link_collision" file="collision/base_link.stl"/>
+    <mesh name="link_1" file="visual/link_1.stl"/>
+    <mesh name="link_1_collision" file="collision/link_1.stl"/>
+    <mesh name="link_2" file="visual/link_2.stl"/>
+    <mesh name="link_2_collision" file="collision/link_2.stl"/>
+    <mesh name="link_3" file="visual/link_3.stl"/>
+    <mesh name="link_3_collision" file="collision/link_3.stl"/>
+    <mesh name="link_4" file="visual/link_4.stl"/>
+    <mesh name="link_4_collision" file="collision/link_4.stl"/>
+    <mesh name="link_5" file="visual/link_5.stl"/>
+    <mesh name="link_5_collision" file="collision/link_5.stl"/>
+    <mesh name="link_6" file="visual/link_6.stl"/>
+    <mesh name="link_6_collision" file="collision/link_6.stl"/>
+    <material name="pearl" rgba="0.95 0.945 0.935 1" specular="0.45" shininess="0.7"/>
+    <material name="wrist" rgba="0.56 0.56 0.58 1" specular="0.4" shininess="0.6"/>
+    <material name="coral" rgba="0.878 0.478 0.451 1" emission="0.6" specular="0.2"/>
+  </asset>
+
+  <default>
+    <default class="visual">
+      <geom type="mesh" group="1" contype="0" conaffinity="0" density="0"/>
+    </default>
+    <default class="collision">
+      <geom type="mesh" group="3" density="0"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <body name="base_link">
+      <inertial pos="0 0 0" mass="8.666" diaginertia="0.04 0.04 0.04"/>  <!-- mass from KUKA; the base is fixed, its inertia never enters the dynamics -->
+      <geom class="visual" mesh="base_link" material="pearl"/>
+      <geom class="collision" mesh="base_link_collision"/>
+      <geom class="visual" type="cylinder" size="0.139 0.004" pos="0 0 0.004" material="coral"/>
+      <body name="link_1" pos="0 0 0.1845" quat="0 1 0 0">
+        <inertial pos="0.00344301 0.019198 -0.086628" quat="0.5 0.5 -0.5 0.5" mass="9.62" diaginertia="0.0522122 0.0489108 0.0383706"/>
+        <joint name="joint_1" axis="0 0 1" range="-3.22886 3.22886" actuatorfrcrange="-398.01127748173354 398.01127748173354"/>  <!-- max velocity 3.490658503988659 rad/s -->
+        <geom class="visual" mesh="link_1" pos="0 -2.25947e-17 0.1845" quat="6.12323e-17 -1 0 0" material="pearl"/>
+        <geom class="collision" mesh="link_1_collision"/>
+        <body name="link_2" pos="0 0.1011 -0.1155" quat="0.707107 0.707107 0 0">
+          <inertial pos="0.144024 0.00231163 -0.0483197" quat="0 0.707107 0 0.707107" mass="7.70748" diaginertia="0.25865 0.252047 0.0306169"/>
+          <joint name="joint_2" axis="0 0 1" range="-4.01426 0.872665" actuatorfrcrange="-286.529873080262 286.529873080262"/>  <!-- max velocity 3.490658503988659 rad/s -->
+          <geom class="visual" mesh="link_2" pos="-0.3 1.83697e-17 0.1011" quat="0.5 0.5 0.5 0.5" material="pearl"/>
+          <geom class="collision" mesh="link_2_collision"/>
+          <body name="link_3" pos="0.385 0 0.0237">
+            <inertial pos="0.0270956 -0.00212187 0.0624636" quat="0 0.707107 0 0.707107" mass="7.48863" diaginertia="0.037777 0.0346916 0.0181557"/>
+            <joint name="joint_3" axis="0 0 1" range="-2.61799 2.61799" actuatorfrcrange="-137.666701140602 137.666701140602"/>  <!-- max velocity 3.490658503988659 rad/s -->
+            <geom class="visual" mesh="link_3" pos="-2.35745e-17 0.685 0.0774" quat="0.707107 0.707107 0 0" material="pearl"/>
+            <geom class="collision" mesh="link_3_collision"/>
+            <body name="link_4" pos="0.1139 0 0.0774" quat="0.5 0.5 -0.5 -0.5">
+              <inertial pos="0.00445828 0.049306 -0.119842" quat="0 0.707107 0 0.707107" mass="5.60083" diaginertia="0.0587486 0.0526136 0.0208772"/>
+              <joint name="joint_4" axis="0 0 1" range="-3.14159 3.14159" actuatorfrcrange="-63.5742376209283 63.5742376209283"/>  <!-- max velocity 4.014257279586958 rad/s -->
+              <geom class="visual" mesh="link_4" pos="-0.685 2.98089e-17 0.1139" quat="0.707107 6.49467e-17 0.707107 -6.49467e-17" material="pearl"/>
+              <geom class="collision" mesh="link_4_collision"/>
+              <body name="link_5" pos="0 0.0507 -0.2531" quat="0.5 -0.5 0.5 0.5">
+                <inertial pos="0.029763 -0.0046114 -0.038523" quat="0.5 0.5 -0.5 0.5" mass="2.5025" diaginertia="0.00841045 0.00667288 0.00503543"/>
+                <joint name="joint_5" axis="0 0 1" range="-1.91986 1.91986" actuatorfrcrange="-58.5802975910498 58.5802975910498"/>  <!-- max velocity 4.537856055185257 rad/s -->
+                <geom class="visual" mesh="link_5" pos="-0.367 0.685 -0.0507" quat="0.707107 0.707107 -2.16489e-17 -2.16489e-17" material="pearl"/>
+                <geom class="collision" mesh="link_5_collision"/>
+                <body name="link_6" pos="0.0837 0 -0.0507" quat="0.5 0.5 -0.5 -0.5">
+                  <inertial pos="-0.0179504 0.0194973 -0.0304582" quat="0.5 0.5 -0.5 0.5" mass="1.5066" diaginertia="0.00403512 0.00390274 0.00286931"/>
+                  <joint name="joint_6" axis="0 0 1" range="-3.83972 3.83972" actuatorfrcrange="-15.9275678542121 15.9275678542121"/>  <!-- max velocity 7.504915783575617 rad/s -->
+                  <geom class="visual" mesh="link_6" pos="-0.685 -1.88805e-17 0.4507" quat="0.707107 4.32978e-17 0.707107 -4.32978e-17" material="wrist"/>
+                  <geom class="collision" mesh="link_6_collision"/>
+                  <site name="flange" pos="0 0 -0.0943" quat="0 0 1 0" size="0.01"/>  <!-- KUKA tool0: z out of the flange -->
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>
